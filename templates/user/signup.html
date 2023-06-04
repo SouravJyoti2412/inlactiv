@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/login_page_style.css' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    </head>
+    <body>
+       <div class="wrapper">
+        <div class="logo">
+            <img src="https://img.freepik.com/free-vector/gradient-school-logo-design-template_23-2149664332.jpg?size=626&ext=jpg&ga=GA1.1.760055017.1685854783&semt=ais" alt="">
+        </div>
+        <div class="text-center mt-4 name">
+            Intelactiv
+        </div>
+        <form class="p-3 mt-3">
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="text" name="number" id="number" placeholder="phone number" a readonly
+     onfocus="this.removeAttribute('readonly');">
+            </div>
+            <div class="form-field d-flex align-items-center">
+                <span class="fas fa-key"></span>
+                <input type="password" name="password" id="pwd" placeholder="Password"  readonly
+     onfocus="this.removeAttribute('readonly');">
+            </div>
+            <button class="btn mt-3 border-0" onclick="send_otp()" type="button" >Get otp</button>
+        </form>
+        <div class="text-center fs-6">
+            have you register ? <a href="#">login
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    
+<script>
+  function send_otp(){
+
+    var number = document.getElementById("number").value;
+    var password = document.getElementById("pwd").value;
+    const requestOptions = {
+           
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone_number: number , password:password })
+        };
+        fetch('http://127.0.0.1:8000/send_otp/', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log('=====>',data);
+                
+        });
+  }
+</script>
+    
+    
+    </body>
+</html>

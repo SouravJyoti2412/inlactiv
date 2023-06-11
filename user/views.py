@@ -1,15 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from user.helpers import send_otp_ro_phone
 from user.models import Customer_singup
 from django.contrib.auth.hashers import make_password , check_password
+from django.views.decorators.csrf import csrf_exempt
+
 def login_view(request):
     return render(request ,"user/login.html" )
 def signup_view(request):
     return render(request , "user/signup.html")
 def otp_view(request):
     return render(request ,"user/get-otp.html")
+
 
 @api_view(["POST"])
 def send_otp(request):
@@ -35,7 +38,7 @@ def send_otp(request):
     customer = Customer_singup.get_customer_details_by_number(data.get("phone_number"))
     request.session["customer_number"]= customer.number
     return Response({
-        'status':200.,
+        'status':200,
         "messege":"otp Send successfully"
     })
     

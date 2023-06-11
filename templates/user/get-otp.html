@@ -20,13 +20,51 @@
       <h4>Enter OTP Code</h4>
       <form action="#">
         <div class="input-field">
-          <input type="number" />
-          <input type="number" disabled />
-          <input type="number" disabled />
-          <input type="number" disabled />
+          <input type="number" id ="otp1" />
+          <input type="number" id ="otp2" disabled />
+          <input type="number" id ="otp3" disabled />
+          <input type="number" id ="otp4" disabled />
         </div>
-        <button>Verify OTP</button>
+        <button onClick ="getOtpVerify()">Verify OTP</button>
       </form>
     </div>
+    <script>
+           function getOtpVerify(){
+            var otp1 = document.getElementById("otp1").value
+            var otp2 = document.getElementById("otp2").value
+            var otp3 = document.getElementById("otp3").value
+            var otp4 = document.getElementById("otp4").value 
+             console.log("otp is "+otp1+otp2+otp3+otp4)
+             const otp = otp1+otp2+otp3+otp4
+             const csrfToken = getCookie('csrftoken'); // Get the CSRF token from the cookie
+             const number = {{request.session.customer_number}}
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken  // Include the CSRF token in the headers
+                    },
+                    body: JSON.stringify({ phone_number: number, otp: otp })
+                };
+
+                fetch('http://127.0.0.1:8000/verify-otp/', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('=====>', data);
+                        if (data["messege"] === "otp matched")
+                        {
+                            window.location.href = "/";
+                        }
+                    });
+            }
+
+            // Helper function to retrieve the CSRF token from the cookie
+            function getCookie(name) {
+                const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+                return cookieValue ? cookieValue.pop() : '';
+            }
+
+           
+    </script>
   </body>
 </html>
